@@ -20,6 +20,7 @@ jobs:
           sudo tailscale up --authkey=${{ secrets.TAILSCALE_AUTH_KEY }} --hostname=github-actions
 
       - name: Setup SSH & Deploy ke VPS
+        host: 100.84.139.107
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.VPS_HOST }}
