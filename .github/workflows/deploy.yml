@@ -18,8 +18,6 @@ jobs:
         run: |
           curl -fsSL https://tailscale.com/install.sh | sh
           sudo tailscale up --authkey=${{ secrets.TAILSCALE_AUTH_KEY }} --hostname=github-actions
-          sudo tailscale ip -4 -o tailscale_ip.txt
-          cat tailscale_ip.txt
           
       - name: Debug SSH Key
         if: github.ref == 'refs/heads/development'
