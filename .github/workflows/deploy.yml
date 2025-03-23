@@ -18,6 +18,13 @@ jobs:
         run: |
           curl -fsSL https://tailscale.com/install.sh | sh
           sudo tailscale up --authkey=${{ secrets.TAILSCALE_AUTH_KEY }} --hostname=github-actions
+          sudo tailscale ip -4 -o tailscale_ip.txt
+          cat tailscale_ip.txt
+          
+      - name: Debug SSH Key
+        if: github.ref == 'refs/heads/development'
+        run: |
+          echo "${{ secrets.VPS_PRIVATE_KEY }}" | base64
 
       - name: Setup SSH & Deploy ke VPS
         uses: appleboy/ssh-action@v0.1.4
