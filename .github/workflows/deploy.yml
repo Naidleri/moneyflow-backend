@@ -18,19 +18,21 @@ jobs:
         run: |
           curl -fsSL https://tailscale.com/install.sh | sh
           sudo tailscale up --authkey=${{ secrets.TAILSCALE_AUTH_KEY }} --hostname=github-actions
+          
+      - name: Debug SSH Key
+        if: github.ref == 'refs/heads/development'
+        run: |
+          echo "${{ secrets.VPS_PRIVATE_KEY }}" | base64
 
       - name: Setup SSH & Deploy ke VPS
-        host: 100.84.139.107
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_PRIVATE_KEY }}
+          password: ${{ secrets.VPS_PASSWORD }}
           port: 22  
           script: |
-            cd ~/moneyflow/docker/backend
+            cd ~/moneyflow/docker/moneyflow-backend
             git pull origin main
             docker compose down
             docker compose up -d --build
-
-
